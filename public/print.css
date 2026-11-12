@@ -1,0 +1,808 @@
+/* ==========================================================================
+   Weekend Reads — print edition (A4, Paged.js)
+   ========================================================================== */
+
+@font-face {
+  font-family: 'Fraunces';
+  src: url('fonts/fraunces-latin.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Source Serif 4';
+  src: url('fonts/source-serif-4-latin.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 300 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Source Serif 4';
+  src: url('fonts/source-serif-4-italic-latin.woff2') format('woff2');
+  font-style: italic;
+  font-weight: 300 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('fonts/inter-latin.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+}
+
+:root {
+  --paper: #f4efe4;
+  --paper-raised: #faf6ed;
+  --paper-deep: #e8dfcd;
+  --ink: #19150f;
+  --ink-soft: #3b332a;
+  --muted: #6e6355;
+  --accent: #a63723;
+  --green: #285a4c;
+  --rule: rgba(25, 21, 15, 0.28);
+  --rule-strong: rgba(25, 21, 15, 0.7);
+  --display: 'Fraunces', Georgia, serif;
+  --body: 'Source Serif 4', Georgia, serif;
+  --sans: 'Inter', Arial, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: #d9d3c7;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 9.7pt;
+  line-height: 1.55;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+p,
+ol,
+ul,
+blockquote,
+figure {
+  margin-top: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Page setup ------------------------------------------------------------- */
+
+@page {
+  size: A4;
+  margin: 18mm 17mm 20mm;
+
+  @top-left {
+    content: 'WEEKEND READS';
+    color: #6e6355;
+    font-family: var(--sans);
+    font-size: 6.5pt;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+  }
+
+  @top-right {
+    content: string(category);
+    color: #6e6355;
+    font-family: var(--sans);
+    font-size: 6.5pt;
+    font-weight: 500;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  @bottom-left {
+    content: string(issue-date);
+    color: #6e6355;
+    font-family: var(--sans);
+    font-size: 6.3pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  @bottom-right {
+    content: counter(page, decimal-leading-zero) ' / ' counter(pages, decimal-leading-zero);
+    color: #6e6355;
+    font-family: var(--sans);
+    font-size: 6.3pt;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+  }
+}
+
+@page cover {
+  margin: 0;
+
+  @top-left {
+    content: none;
+  }
+  @top-right {
+    content: none;
+  }
+  @bottom-left {
+    content: none;
+  }
+  @bottom-right {
+    content: none;
+  }
+}
+
+@page toc {
+  @top-right {
+    content: 'CONTENTS';
+  }
+}
+
+/* Cover ------------------------------------------------------------------ */
+
+.print-cover {
+  page: cover;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 210mm;
+  height: 294mm;
+  padding: 15mm 17mm 14mm;
+  overflow: hidden;
+  background: var(--paper);
+  break-after: page;
+  break-inside: avoid;
+}
+
+.print-cover-art {
+  position: absolute;
+  top: 88mm;
+  right: -26mm;
+  width: 120mm;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.print-cover-art text {
+  display: none;
+}
+
+.print-cover-art .cover-art-svg {
+  width: 100%;
+  height: auto;
+}
+
+.print-cover-top {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 2.4mm;
+  border-bottom: 0.7pt solid var(--rule-strong);
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 6.4pt;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.print-cover-main {
+  position: relative;
+  z-index: 1;
+  max-width: 118mm;
+  margin-top: 26mm;
+}
+
+.print-eyebrow {
+  margin: 0 0 2.2mm;
+  color: var(--accent);
+  font-family: var(--sans);
+  font-size: 6.4pt;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.print-wordmark {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-family: var(--display);
+  font-size: 34mm;
+  font-weight: 520;
+  letter-spacing: -0.072em;
+  line-height: 0.78;
+}
+
+.print-wordmark em {
+  display: block;
+  margin-left: 2mm;
+  color: var(--accent);
+  font-style: italic;
+  font-weight: 290;
+  letter-spacing: -0.06em;
+}
+
+.print-cover-rule {
+  width: 46mm;
+  height: 0;
+  margin: 10mm 0 7mm;
+  border-top: 2pt solid var(--accent);
+}
+
+.print-cover-label {
+  margin: 0 0 2mm;
+  color: var(--accent);
+  font-family: var(--sans);
+  font-size: 6pt;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.print-cover-title {
+  max-width: 112mm;
+  margin: 0 0 3mm;
+  font-family: var(--display);
+  font-size: 23pt;
+  font-weight: 470;
+  letter-spacing: -0.038em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+.print-cover-dek {
+  max-width: 108mm;
+  margin: 0 0 3mm;
+  color: var(--ink-soft);
+  font-size: 9.6pt;
+  line-height: 1.42;
+}
+
+.print-cover-byline {
+  margin: 0;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 6.1pt;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.print-cover-bottom {
+  position: absolute;
+  right: 17mm;
+  bottom: 17mm;
+  left: 17mm;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 50mm 1fr;
+  gap: 9mm;
+  padding-top: 4mm;
+  border-top: 0.7pt solid var(--rule-strong);
+}
+
+.print-issue-date {
+  display: flex;
+  flex-direction: column;
+  gap: 1mm;
+  font-family: var(--sans);
+  font-size: 6.2pt;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.print-issue-date span:first-child {
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.print-issue-date time {
+  string-set: issue-date content(text);
+  color: var(--ink-soft);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.print-cover-lines {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.4mm 7mm;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.print-cover-lines li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6mm;
+  padding-left: 2.4mm;
+  border-left: 0.6pt solid var(--rule);
+  font-family: var(--body);
+  font-size: 7pt;
+  line-height: 1.3;
+}
+
+.print-cover-lines span {
+  color: var(--accent);
+  font-family: var(--sans);
+  font-size: 5.2pt;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.print-cover-lines strong {
+  font-weight: 400;
+}
+
+/* Contents --------------------------------------------------------------- */
+
+.print-toc {
+  page: toc;
+  padding-top: 7mm;
+  break-after: page;
+}
+
+.print-toc-header {
+  padding-bottom: 8mm;
+  border-bottom: 1.4pt solid var(--ink);
+}
+
+.print-toc-header .print-eyebrow {
+  margin-bottom: 3mm;
+}
+
+.print-toc-header h2 {
+  margin: 0 0 2mm;
+  font-family: var(--display);
+  font-size: 38pt;
+  font-weight: 420;
+  letter-spacing: -0.06em;
+  line-height: 0.9;
+}
+
+.print-toc-dek {
+  margin: 0;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 6.5pt;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.print-toc-note {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9mm;
+  margin: 7mm 0 8mm;
+  font-family: var(--display);
+  font-size: 9.4pt;
+  line-height: 1.4;
+}
+
+.print-toc-note p {
+  margin: 0;
+}
+
+.print-toc-note p:first-child::first-letter {
+  float: left;
+  padding: 0.06em 0.08em 0 0;
+  color: var(--accent);
+  font-size: 3.2em;
+  line-height: 0.72;
+}
+
+.print-toc-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.print-toc-list li {
+  border-top: 0.5pt solid var(--rule);
+}
+
+.print-toc-list a {
+  display: grid;
+  grid-template-columns: 9mm 27mm minmax(0, 1fr) 23mm 13mm;
+  gap: 2.5mm;
+  align-items: baseline;
+  padding: 2.25mm 0;
+  font-size: 8.8pt;
+}
+
+.print-toc-num {
+  color: var(--accent);
+  font-family: var(--display);
+  font-size: 10pt;
+  font-weight: 350;
+}
+
+.print-toc-cat {
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 5.6pt;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.print-toc-title {
+  padding-bottom: 0.3mm;
+  border-bottom: 0.5pt dotted var(--rule);
+  font-family: var(--display);
+  font-size: 10.2pt;
+  font-weight: 440;
+  letter-spacing: -0.018em;
+  line-height: 1.2;
+}
+
+.print-toc-source {
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 5.7pt;
+  letter-spacing: 0.04em;
+  text-align: right;
+}
+
+.print-toc-list a::after {
+  content: target-counter(attr(href), page);
+  color: var(--ink-soft);
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 600;
+  text-align: right;
+}
+
+.print-toc-foot {
+  margin-top: 7mm;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 5.8pt;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Articles --------------------------------------------------------------- */
+
+.print-story {
+  break-before: page;
+}
+
+.print-story-header {
+  display: grid;
+  grid-template-columns: 19mm minmax(0, 1fr);
+  gap: 6mm;
+  padding-bottom: 6mm;
+  border-bottom: 1.4pt solid var(--ink);
+  break-after: avoid;
+}
+
+.print-story-number {
+  color: var(--accent);
+  font-family: var(--display);
+  font-size: 30pt;
+  font-weight: 300;
+  letter-spacing: -0.07em;
+  line-height: 0.78;
+}
+
+.print-story-category {
+  margin: 0 0 2mm;
+  color: var(--accent);
+  font-family: var(--sans);
+  font-size: 6.1pt;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.print-category-name {
+  string-set: category content(text);
+}
+
+.print-story-head h2 {
+  max-width: 155mm;
+  margin: 0 0 2.5mm;
+  font-family: var(--display);
+  font-size: 27pt;
+  font-weight: 450;
+  letter-spacing: -0.048em;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+.print-story-dek {
+  max-width: 150mm;
+  margin: 0 0 2mm;
+  color: var(--ink-soft);
+  font-size: 9.6pt;
+  line-height: 1.42;
+}
+
+.print-story-byline {
+  margin: 0;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 5.9pt;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.print-story-summary {
+  padding: 4.5mm 5mm;
+  margin: 6mm 0;
+  background: var(--paper-deep);
+  border-left: 2.4pt solid var(--accent);
+  break-inside: avoid;
+}
+
+.print-summary-label {
+  margin: 0 0 1.5mm;
+  color: var(--accent);
+  font-family: var(--sans);
+  font-size: 5.5pt;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.print-story-summary p:last-child {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 10.6pt;
+  font-weight: 380;
+  letter-spacing: -0.01em;
+  line-height: 1.42;
+}
+
+.print-story-body {
+  column-count: 2;
+  column-gap: 9mm;
+  hyphens: auto;
+  orphans: 3;
+  widows: 3;
+}
+
+.print-story-body > p {
+  margin: 0 0 0.85em;
+  text-align: justify;
+}
+
+.print-story-body > p:first-of-type::first-letter {
+  float: left;
+  padding: 0.08em 0.07em 0 0;
+  color: var(--accent);
+  font-family: var(--display);
+  font-size: 3.8em;
+  font-weight: 430;
+  line-height: 0.72;
+}
+
+.print-story-body h3 {
+  margin: 4.5mm 0 1.8mm;
+  padding-top: 1.8mm;
+  border-top: 0.6pt solid var(--rule);
+  color: var(--accent);
+  font-family: var(--sans);
+  font-size: 5.8pt;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  break-after: avoid;
+}
+
+.print-story-body h3:first-child {
+  margin-top: 0;
+}
+
+.print-story-body strong {
+  color: var(--ink);
+  font-weight: 650;
+}
+
+.print-story-body em {
+  font-style: italic;
+}
+
+.print-pullquote {
+  margin: 3.5mm 0;
+  padding: 2.2mm 0;
+  border-top: 0.7pt solid var(--rule);
+  border-bottom: 0.7pt solid var(--rule);
+  break-inside: avoid;
+}
+
+.print-pullquote p {
+  margin: 0;
+  color: var(--accent);
+  font-family: var(--display);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 360;
+  letter-spacing: -0.032em;
+  line-height: 1.18;
+  text-indent: -0.36em;
+}
+
+.print-takeaways {
+  padding: 3.5mm 4mm;
+  margin: 5mm 0;
+  border: 0.6pt solid var(--rule);
+  background: var(--paper-raised);
+  break-inside: avoid;
+}
+
+.print-takeaways ol {
+  margin: 0;
+  padding-left: 4.5mm;
+}
+
+.print-takeaways li {
+  margin-bottom: 1.4mm;
+  font-size: 8.5pt;
+  line-height: 1.4;
+}
+
+.print-takeaways li::marker {
+  color: var(--accent);
+  font-family: var(--sans);
+  font-size: 6.5pt;
+  font-weight: 600;
+}
+
+.print-source {
+  margin: 4mm 0 0;
+  padding-top: 1.6mm;
+  border-top: 0.5pt solid var(--rule);
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 5.6pt;
+  line-height: 1.45;
+  break-inside: avoid;
+}
+
+.print-url {
+  word-break: break-all;
+  overflow-wrap: anywhere;
+}
+
+/* Colophon --------------------------------------------------------------- */
+
+.print-colophon {
+  break-before: page;
+  padding-top: 8mm;
+}
+
+.print-colophon h2 {
+  margin: 0 0 5mm;
+  font-family: var(--display);
+  font-size: 30pt;
+  font-weight: 420;
+  letter-spacing: -0.055em;
+  line-height: 0.95;
+}
+
+.print-colophon > p {
+  max-width: 160mm;
+  margin-bottom: 3.5mm;
+  font-size: 9.5pt;
+  line-height: 1.55;
+}
+
+.print-colophon h3 {
+  margin: 8mm 0 3mm;
+  padding-top: 2mm;
+  border-top: 1pt solid var(--ink);
+  color: var(--accent);
+  font-family: var(--sans);
+  font-size: 6.2pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.print-source-list {
+  columns: 2;
+  column-gap: 8mm;
+  margin: 0;
+  padding-left: 4.5mm;
+  font-size: 7.6pt;
+  line-height: 1.4;
+}
+
+.print-source-list li {
+  margin-bottom: 2.4mm;
+  break-inside: avoid;
+}
+
+.print-source-list strong {
+  font-weight: 600;
+}
+
+.print-colophon-end {
+  margin-top: 12mm;
+  padding-top: 3mm;
+  border-top: 1.4pt solid var(--ink);
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 6pt;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* Paged.js screen preview ------------------------------------------------ */
+
+@media screen {
+  body {
+    padding: 28px 0;
+  }
+
+  .pagedjs_pages {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: center;
+  }
+
+  .pagedjs_page {
+    background: var(--paper);
+    box-shadow: 0 18px 50px rgba(20, 15, 10, 0.28);
+  }
+
+  .pagedjs_pagebox {
+    background: var(--paper);
+  }
+
+  .print-magazine {
+    display: block;
+  }
+}
+
+@media print {
+  html,
+  body {
+    background: #fff;
+  }
+
+  .pagedjs_pages {
+    display: block;
+  }
+
+  .pagedjs_page {
+    box-shadow: none;
+  }
+}

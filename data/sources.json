@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "updated": "2026-11-10",
+  "notes": "Curated longform-first sources. Add or remove feeds freely; the generator tolerates failed or paywalled feeds.",
+  "categories": [
+    {
+      "id": "politics",
+      "name": "Politics",
+      "shortName": "Politics",
+      "description": "Power, institutions and the decisions that shape public life.",
+      "feeds": [
+        { "name": "The Guardian", "url": "https://www.theguardian.com/politics/rss", "weight": 1.1 },
+        { "name": "BBC News", "url": "https://feeds.bbci.co.uk/news/politics/rss.xml", "weight": 1.0 },
+        { "name": "Politico", "url": "https://rss.politico.com/politics-news.xml", "weight": 1.05 },
+        { "name": "The Atlantic", "url": "https://www.theatlantic.com/feed/channel/politics/", "weight": 1.15 }
+      ]
+    },
+    {
+      "id": "india",
+      "name": "India Focus",
+      "shortName": "India",
+      "description": "Reporting and argument from the world's largest democracy.",
+      "feeds": [
+        { "name": "Frontline", "url": "https://frontline.thehindu.com/feeder/default.rss", "weight": 1.2 },
+        { "name": "The Hindu", "url": "https://www.thehindu.com/news/national/feeder/default.rss", "weight": 1.05 },
+        { "name": "The Indian Express", "url": "https://indianexpress.com/section/india/feed/", "weight": 1.0 },
+        { "name": "Mint", "url": "https://www.livemint.com/rss/opinion", "weight": 1.1 },
+        { "name": "Hindustan Times", "url": "https://www.hindustantimes.com/feeds/rss/opinion/rssfeed.xml", "weight": 1.05 },
+        { "name": "The Indian Express", "url": "https://indianexpress.com/section/opinion/feed/", "weight": 1.0 }
+      ]
+    },
+    {
+      "id": "science",
+      "name": "Science & Nature",
+      "shortName": "Science",
+      "description": "Discovery, evidence and the natural world.",
+      "feeds": [
+        { "name": "Quanta Magazine", "url": "https://www.quantamagazine.org/feed/", "weight": 1.2 },
+        { "name": "The Guardian", "url": "https://www.theguardian.com/science/rss", "weight": 1.05 },
+        { "name": "BBC News", "url": "https://feeds.bbci.co.uk/news/science_and_environment/rss.xml", "weight": 1.0 },
+        { "name": "Nature", "url": "https://www.nature.com/nature.rss", "weight": 1.15 }
+      ]
+    },
+    {
+      "id": "technology",
+      "name": "Emerging Technology",
+      "shortName": "Technology",
+      "description": "The tools, systems and ideas remaking how we live.",
+      "feeds": [
+        { "name": "MIT Technology Review", "url": "https://www.technologyreview.com/feed/", "weight": 1.2 },
+        { "name": "Ars Technica", "url": "https://feeds.arstechnica.com/arstechnica/index", "weight": 1.1 },
+        { "name": "Wired", "url": "https://www.wired.com/feed/category/business/rss", "weight": 1.1 },
+        { "name": "IEEE Spectrum", "url": "https://spectrum.ieee.org/feeds/feed.rss", "weight": 1.15 }
+      ]
+    },
+    {
+      "id": "global",
+      "name": "Global Affairs & Geopolitics",
+      "shortName": "Global",
+      "description": "The forces redrawing borders, alliances and the world order.",
+      "feeds": [
+        { "name": "The Guardian", "url": "https://www.theguardian.com/world/rss", "weight": 1.05 },
+        { "name": "Foreign Affairs", "url": "https://www.foreignaffairs.com/rss.xml", "weight": 1.25 },
+        { "name": "BBC News", "url": "https://feeds.bbci.co.uk/news/world/rss.xml", "weight": 1.0 },
+        { "name": "Al Jazeera", "url": "https://www.aljazeera.com/xml/rss/all.xml", "weight": 1.0 }
+      ]
+    },
+    {
+      "id": "ideas",
+      "name": "Philosophy & Ideas",
+      "shortName": "Ideas",
+      "description": "Essays that test our assumptions and enlarge the frame.",
+      "feeds": [
+        { "name": "Aeon", "url": "https://aeon.co/feed.rss", "weight": 1.25 },
+        { "name": "Noema", "url": "https://www.noemamag.com/feed/", "weight": 1.2 },
+        { "name": "The Point", "url": "https://thepointmag.com/feed/", "weight": 1.15 },
+        { "name": "Psyche", "url": "https://psyche.co/feed.rss", "weight": 1.1 }
+      ]
+    },
+    {
+      "id": "business",
+      "name": "Business & Economics",
+      "shortName": "Business",
+      "description": "Markets, work and the economy as a human system.",
+      "feeds": [
+        { "name": "Fortune", "url": "https://fortune.com/feed/", "weight": 1.2 },
+        { "name": "The Conversation", "url": "https://theconversation.com/us/business/articles.atom", "weight": 1.15 },
+        { "name": "The Guardian", "url": "https://www.theguardian.com/business/rss", "weight": 1.05 },
+        { "name": "Project Syndicate", "url": "https://www.project-syndicate.org/rss", "weight": 1.1 },
+        { "name": "Marginal Revolution", "url": "https://marginalrevolution.com/feed", "weight": 1.0 }
+      ]
+    },
+    {
+      "id": "culture",
+      "name": "Society & Culture",
+      "shortName": "Culture",
+      "description": "Art, books, film and the way we live now.",
+      "feeds": [
+        { "name": "The Atlantic", "url": "https://www.theatlantic.com/feed/channel/culture/", "weight": 1.2 },
+        { "name": "The New Yorker", "url": "https://www.newyorker.com/feed/everything", "weight": 1.2 },
+        { "name": "The Guardian", "url": "https://www.theguardian.com/culture/rss", "weight": 1.0 },
+        { "name": "Literary Hub", "url": "https://lithub.com/feed/", "weight": 1.1 }
+      ]
+    },
+    {
+      "id": "climate",
+      "name": "Climate & Environment",
+      "shortName": "Climate",
+      "description": "The planet, the science and the politics of survival.",
+      "feeds": [
+        { "name": "Carbon Brief", "url": "https://www.carbonbrief.org/feed/", "weight": 1.2 },
+        { "name": "Inside Climate News", "url": "https://insideclimatenews.org/feed/", "weight": 1.15 },
+        { "name": "The Guardian", "url": "https://www.theguardian.com/environment/rss", "weight": 1.05 },
+        { "name": "Yale Environment 360", "url": "https://e360.yale.edu/feed.xml", "weight": 1.2 }
+      ]
+    },
+    {
+      "id": "longform",
+      "name": "Longform Deep Dives",
+      "shortName": "Longform",
+      "description": "Reporting with room to breathe, from the best narrative desks.",
+      "feeds": [
+        { "name": "The Guardian", "url": "https://www.theguardian.com/news/series/the-long-read/rss", "weight": 1.25 },
+        { "name": "Longreads", "url": "https://longreads.com/feed/", "weight": 1.15 },
+        { "name": "ProPublica", "url": "https://www.propublica.org/feeds/propublica/main", "weight": 1.25 },
+        { "name": "The Atavist Magazine", "url": "https://magazine.atavist.com/feed/", "weight": 1.2 }
+      ]
+    }
+  ]
+}

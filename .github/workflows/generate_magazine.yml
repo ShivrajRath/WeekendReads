@@ -1,0 +1,152 @@
+name: Generate weekly issue
+
+on:
+  schedule:
+    # Every Friday at 04:00 UTC.
+    - cron: '0 4 * * 5'
+  workflow_dispatch:
+    inputs:
+      issue_date:
+        description: 'Issue date (YYYY-MM-DD). Leave blank to use today in UTC.'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: weekend-reads-weekly
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build, publish and release
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chrome for PDF rendering
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
+      - name: Resolve issue date
+        id: issue
+        env:
+          INPUT_DATE: ${{ inputs.issue_date }}
+        run: |
+          set -euo pipefail
+          if [ -n "${INPUT_DATE:-}" ]; then
+            issue_date="$INPUT_DATE"
+          else
+            issue_date="$(date -u +%F)"
+          fi
+          if ! [[ "$issue_date" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
+            echo "::error::Invalid issue date '$issue_date'. Expected YYYY-MM-DD."
+            exit 1
+          fi
+          echo "date=$issue_date" >> "$GITHUB_OUTPUT"
+          echo "pdf=public/issues/Issue-$issue_date.pdf" >> "$GITHUB_OUTPUT"
+
+      - name: Build the issue and PDF
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GEMINI_MODELS: ${{ vars.GEMINI_MODELS }}
+          GROQ_MODEL: ${{ vars.GROQ_MODEL }}
+          MIN_WORDS: ${{ vars.MIN_WORDS }}
+          WINDOW_DAYS: ${{ vars.WINDOW_DAYS }}
+          ENRICH_PER_CATEGORY: ${{ vars.ENRICH_PER_CATEGORY }}
+          SITE_URL: ${{ vars.SITE_URL }}
+          PUPPETEER_EXECUTABLE_PATH: google-chrome
+        run: |
+          set -euo pipefail
+          chrome_bin="$(command -v google-chrome || command -v chrome || true)"
+          if [ -z "$chrome_bin" ]; then
+            echo "::error::Chrome was not found on PATH."
+            exit 1
+          fi
+          echo "Using Chrome at $chrome_bin"
+          export PUPPETEER_EXECUTABLE_PATH="$chrome_bin"
+          node src/index.js --date="${{ steps.issue.outputs.date }}"
+
+      - name: Verify generated files
+        env:
+          ISSUE_DATE: ${{ steps.issue.outputs.date }}
+        run: |
+          set -euo pipefail
+          test -s "data/issues/${ISSUE_DATE}.json"
+          test -s "public/issues/${ISSUE_DATE}.html"
+          test -s "public/issues/${ISSUE_DATE}-print.html"
+          test -s "public/issues/Issue-${ISSUE_DATE}.pdf"
+          pdfinfo "public/issues/Issue-${ISSUE_DATE}.pdf" | sed -n '1,20p'
+
+      - name: Commit the dated issue
+        env:
+          ISSUE_DATE: ${{ steps.issue.outputs.date }}
+        run: |
+          set -euo pipefail
+          git config user.name "weekend-reads-bot"
+          git config user.email "weekend-reads-bot@users.noreply.github.com"
+          git add data public
+          if git diff --cached --quiet; then
+            echo "No generated changes to commit."
+          else
+            git commit -m "Publish Weekend Reads issue ${ISSUE_DATE}"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Remove an existing release for this date
+        if: ${{ !cancelled() }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_DATE: ${{ steps.issue.outputs.date }}
+        run: |
+          gh release delete "issue-${ISSUE_DATE}" --yes --cleanup-tag || true
+
+      - name: Publish dated release with PDF
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: issue-${{ steps.issue.outputs.date }}
+          name: Weekend Editorial - Issue ${{ steps.issue.outputs.date }}
+          body: |
+            The dated edition of Weekend Reads for ${{ steps.issue.outputs.date }}.
+
+            - Read online: ${{ steps.deployment.outputs.page_url }}issues/${{ steps.issue.outputs.date }}.html
+            - Print edition: https://github.com/${{ github.repository }}/releases/download/issue-${{ steps.issue.outputs.date }}/Issue-${{ steps.issue.outputs.date }}.pdf
+          files: ${{ steps.issue.outputs.pdf }}
+          make_latest: true
+          fail_on_unmatched_files: true

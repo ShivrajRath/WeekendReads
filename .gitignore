@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Local environment
+.env
+.env.*
+!.env.example
+
+# Logs and caches
+*.log
+npm-debug.log*
+.cache/
+coverage/
+tmp/
+
+# Editor and OS noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Puppeteer's downloaded browser cache, if a developer enables it
+.puppeteer-cache/

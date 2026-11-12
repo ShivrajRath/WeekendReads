@@ -1,0 +1,39 @@
+{
+  "generated_at": "2026-11-12T03:02:10.624Z",
+  "latest": {
+    "issue_date": "2026-11-10",
+    "issue_date_long": "Tuesday, 10 November 2026",
+    "issue_number": 1,
+    "issue_number_display": "01",
+    "weekday": "Tuesday",
+    "volume": "I",
+    "article_count": 10,
+    "reading_minutes": 166,
+    "source_count": 9,
+    "cover_title": "What I Learned About Christmas—And Life—By Starring* in a Hallmark Movie",
+    "cover_category": "Society & Culture",
+    "url": "issues/2026-11-10.html",
+    "pdf": "issues/Issue-2026-11-10.pdf",
+    "print": "issues/2026-11-10-print.html",
+    "data": "issues/2026-11-10.json"
+  },
+  "issues": [
+    {
+      "issue_date": "2026-11-10",
+      "issue_date_long": "Tuesday, 10 November 2026",
+      "issue_number": 1,
+      "issue_number_display": "01",
+      "weekday": "Tuesday",
+      "volume": "I",
+      "article_count": 10,
+      "reading_minutes": 166,
+      "source_count": 9,
+      "cover_title": "What I Learned About Christmas—And Life—By Starring* in a Hallmark Movie",
+      "cover_category": "Society & Culture",
+      "url": "issues/2026-11-10.html",
+      "pdf": "issues/Issue-2026-11-10.pdf",
+      "print": "issues/2026-11-10-print.html",
+      "data": "issues/2026-11-10.json"
+    }
+  ]
+}
